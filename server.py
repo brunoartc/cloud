@@ -7,17 +7,10 @@ global task_id
 task_id = 0
 
 class Tarefas:
-    
     def __init__(self, name, description):
         self.name = name
         self.description = description
         self.removed = 0
-
-        
-        
-        
-
-
 
 @app.route('/Tarefa', methods = ['GET'])
 def getTarefa():
@@ -48,9 +41,9 @@ def getTarefaById(id):
         print(id)
         print(tasks[int(id)])
         if (tasks[int(id)]['removed']):
-            return jsonify({"status":"fail", "data":"TASKREMOVED"})
+            return jsonify({"status":"fail", "data":"TASKREMOVED"}),404
     except KeyError:
-        return jsonify({"status":"error", "data":"KeyError"})
+        return jsonify({"status":"error", "data":"KeyError"}),404
     else:
         return jsonify({"status":"success", "data":tasks[int(id)]})
 
@@ -58,9 +51,9 @@ def getTarefaById(id):
 def updateTarefa(id):
     try:
         if (tasks[int(id)]['removed']):
-            return jsonify({"status":"fail", "data":"TASKREMOVED"})
+            return jsonify({"status":"fail", "data":"TASKREMOVED"}),404
     except KeyError:
-        return jsonify({"status":"error", "data":"KeyError"})
+        return jsonify({"status":"error", "data":"KeyError"}),404
     else:
         name = request.form['name']
         description = request.form['description']
@@ -74,7 +67,7 @@ def deleteTarefa(id):
     try:
         tasks[int(id)]['removed'] = 1
     except KeyError:
-        return jsonify({"status":"error", "data":"KeyError"})
+        return jsonify({"status":"error", "data":"KeyError"}),404
     else:
         return jsonify({"status":"success", "data":"TASKremoved"})
 
